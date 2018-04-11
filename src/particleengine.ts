@@ -6,9 +6,20 @@ export class ParticleEngine {
     private particleList: Array<Particle> = [];
     private context: CanvasRenderingContext2D;
   
-    constructor(particleList: Array<Particle>, context: CanvasRenderingContext2D) {
-        this.particleList = particleList;
+    constructor(context: CanvasRenderingContext2D) {
+        //this.particleList = particleList;
         this.context = context;
+    }
+
+    public init(nrOfParticles=100, canvasWidth=100, canvasHeight=100) {
+        //Add one static item in the middle
+        this.particleList.push(new Particle({x: Math.round(canvasWidth/2),y: Math.round(canvasHeight/2)}, false));
+        //Add the rest
+        for (let i = 0; i < nrOfParticles - 1; i++) {
+            let x: number = this.randomInt(0, canvasWidth);
+            let y: number = this.randomInt(0, canvasHeight);
+            this.particleList.push(new Particle({x: x, y: y}));
+        }
     }
 
     public run() {
@@ -34,4 +45,11 @@ export class ParticleEngine {
             }
         }
     }
+
+    private randomInt(min: number, max: number)  {
+        // TODO: Change so that it's not fully random but random in accordance to ParticleSize.
+        // E.g: if particle size is 2. A new particle can be added to x,y: 0, 2, 4, 6 and so on. If particle size is 3 
+        // a new particle can be added to x,y: 0, 3, 6, 9 and so on.
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
 }

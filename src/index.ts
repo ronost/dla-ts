@@ -35,7 +35,7 @@ let init = () => {
       particleList.push(new Particle({x: x, y: y}));
   }
 
-  particleEngine = new ParticleEngine(particleList, ctx);
+  particleEngine = new ParticleEngine(ctx);
 
   console.log("particleList: ", particleList);
   console.log("particleList isFree == true", particleList.filter(p => p.isFree()));
