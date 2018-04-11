@@ -2,10 +2,11 @@ import { Particle } from '../src/particle';
 import { ParticleEngine } from '../src/particleengine';
 import { Direction } from '../src/direction';
 import { PARTICLE_SIZE } from '../src/constants';
+import { ParticleList } from '../src/particlelist';
 
 describe('particleEngile', () => {
     let engine;
-    let particleList: Array<Particle>;
+    let particleList: ParticleList;
     let context: CanvasRenderingContext2D;
     let static_x = 49;
     let static_y = 49;
@@ -18,11 +19,8 @@ describe('particleEngile', () => {
 
         context = canvas.getContext('2d');
 
-        //Clear particleList
-        particleList = [];
-
-        //Add one static item in the middle
-        particleList.push(new Particle({x: static_x,y: static_y}, false));
+        //Clear particleList and add static particle
+        particleList = new ParticleList(new Particle({x: static_x,y: static_y}, false), 100, 100, 0);
 
         spyOn(context, 'fillRect').and.callThrough();
     });
@@ -43,212 +41,220 @@ describe('particleEngile', () => {
     it('should add particle and move it to the RIGHT of static particle', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('LEFT'));
 
-        particleList.push(new Particle({x: static_x + 3 * PARTICLE_SIZE, y: static_y}));
+        particleList.add(new Particle({x: static_x + 3 * PARTICLE_SIZE, y: static_y}));
         engine = new ParticleEngine(particleList, context);
     
-        expect(particleList[1].isFree()).toBeTruthy();
+        expect(particleList.get()[1].isFree()).toBeTruthy();
 
         engine.run();
         engine.run();
         
         //Should have moved particle 2 steps and bound it
         expect(Direction.random).toHaveBeenCalled();
-        expect(particleList[1].isFree()).toBeFalsy();
-        expect(particleList[1].getPosition().x).toBe(static_x + PARTICLE_SIZE);
-        expect(particleList[1].getPosition().y).toBe(static_y);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x + PARTICLE_SIZE);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y);
         //Distance should be size of particle
-        expect(Math.abs(particleList[1].getPosition().x - particleList[0].getPosition().x)).toBe(PARTICLE_SIZE);
+        expect(Math.abs(particleList.get()[1].getPosition().x - particleList.get()[0].getPosition().x)).toBe(PARTICLE_SIZE);
     
         engine.run();
         
         //Should be unchanged since particle is bound to static
-        expect(particleList[1].getPosition().x).toBe(static_x + PARTICLE_SIZE);
-        expect(particleList[1].getPosition().y).toBe(static_y);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x + PARTICLE_SIZE);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y);
     });
 
     it('should add particle and move it to the LEFT of static particle', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('RIGHT'));
 
-        particleList.push(new Particle({x: static_x - 3 * PARTICLE_SIZE, y: static_y}));
+        particleList.add(new Particle({x: static_x - 3 * PARTICLE_SIZE, y: static_y}));
         engine = new ParticleEngine(particleList, context);
 
-        expect(particleList[1].isFree()).toBeTruthy();
+        expect(particleList.get()[1].isFree()).toBeTruthy();
 
         engine.run();
         engine.run();
         
         //Should have moved particle 2 steps and bound it
         expect(Direction.random).toHaveBeenCalled();
-        expect(particleList[1].isFree()).toBeFalsy();
-        expect(particleList[1].getPosition().x).toBe(static_x - PARTICLE_SIZE);
-        expect(particleList[1].getPosition().y).toBe(static_y);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x - PARTICLE_SIZE);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y);
         //Distance should be size of particle
-        expect(Math.abs(particleList[1].getPosition().x - particleList[0].getPosition().x)).toBe(PARTICLE_SIZE);
+        expect(Math.abs(particleList.get()[1].getPosition().x - particleList.get()[0].getPosition().x)).toBe(PARTICLE_SIZE);
         
         engine.run();
         
         //Should be unchanged since particle is bound to static
-        expect(particleList[1].getPosition().x).toBe(static_x - PARTICLE_SIZE);
-        expect(particleList[1].getPosition().y).toBe(static_y);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x - PARTICLE_SIZE);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y);
     });
 
     it('should add particle and move it to the TOP of static particle', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('DOWN'));
 
-        particleList.push(new Particle({x: static_x, y: static_y + 3 * PARTICLE_SIZE}));
+        particleList.add(new Particle({x: static_x, y: static_y + 3 * PARTICLE_SIZE}));
         engine = new ParticleEngine(particleList, context);
         
-        expect(particleList[1].isFree()).toBeTruthy();
+        expect(particleList.get()[1].isFree()).toBeTruthy();
 
         engine.run();
         engine.run();
         
         //Should have moved particle 2 steps and bound it
         expect(Direction.random).toHaveBeenCalled();
-        expect(particleList[1].isFree()).toBeFalsy();
-        expect(particleList[1].getPosition().x).toBe(static_x);
-        expect(particleList[1].getPosition().y).toBe(static_y + PARTICLE_SIZE);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y + PARTICLE_SIZE);
         //Distance should be size of particle
-        expect(Math.abs(particleList[1].getPosition().y - particleList[0].getPosition().y)).toBe(PARTICLE_SIZE);
+        expect(Math.abs(particleList.get()[1].getPosition().y - particleList.get()[0].getPosition().y)).toBe(PARTICLE_SIZE);
         
         engine.run();
         
         //Should be unchanged since particle is bound to static
-        expect(particleList[1].getPosition().x).toBe(static_x);
-        expect(particleList[1].getPosition().y).toBe(static_y + PARTICLE_SIZE);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y + PARTICLE_SIZE);
     });
 
     it('should add particle and move it to the BOTTOM of static particle', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('UP'));
 
-        particleList.push(new Particle({x: static_x, y: static_y - 3 * PARTICLE_SIZE}));
+        particleList.add(new Particle({x: static_x, y: static_y - 3 * PARTICLE_SIZE}));
         engine = new ParticleEngine(particleList, context);
         
-        expect(particleList[1].isFree()).toBeTruthy();
+        expect(particleList.get()[1].isFree()).toBeTruthy();
 
         engine.run();
         engine.run();
         
         //Should have moved particle 2 steps and bound it
         expect(Direction.random).toHaveBeenCalled();
-        expect(particleList[1].isFree()).toBeFalsy();
-        expect(particleList[1].getPosition().x).toBe(static_x);
-        expect(particleList[1].getPosition().y).toBe(static_y - PARTICLE_SIZE);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y - PARTICLE_SIZE);
         //Distance should be size of particle
-        expect(Math.abs(particleList[1].getPosition().y - particleList[0].getPosition().y)).toBe(PARTICLE_SIZE);
+        expect(Math.abs(particleList.get()[1].getPosition().y - particleList.get()[0].getPosition().y)).toBe(PARTICLE_SIZE);
         
         engine.run();
         
         //Should be unchanged since particle is bound to static
-        expect(particleList[1].getPosition().x).toBe(static_x);
-        expect(particleList[1].getPosition().y).toBe(static_y - PARTICLE_SIZE);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y - PARTICLE_SIZE);
     });
 
     it('should add particle and move it to the TOP-RIGHT of static particle', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('DOWN_LEFT'));
 
-        particleList.push(new Particle({x: static_x + 3 * PARTICLE_SIZE, y: static_y + 3 * PARTICLE_SIZE}));
+        particleList.add(new Particle({x: static_x + 3 * PARTICLE_SIZE, y: static_y + 3 * PARTICLE_SIZE}));
         engine = new ParticleEngine(particleList, context);
         
-        expect(particleList[1].isFree()).toBeTruthy();
+        expect(particleList.get()[1].isFree()).toBeTruthy();
 
         engine.run();
         engine.run();
         
         //Should have moved particle 2 steps and bound it
         expect(Direction.random).toHaveBeenCalled();
-        expect(particleList[1].isFree()).toBeFalsy();
-        expect(particleList[1].getPosition().x).toBe(static_x + PARTICLE_SIZE);
-        expect(particleList[1].getPosition().y).toBe(static_y + PARTICLE_SIZE);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x + PARTICLE_SIZE);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y + PARTICLE_SIZE);
         //Distance should be size of particle
-        expect(Math.abs(particleList[1].getPosition().y - particleList[0].getPosition().y)).toBe(PARTICLE_SIZE);
-        expect(Math.abs(particleList[1].getPosition().x - particleList[0].getPosition().x)).toBe(PARTICLE_SIZE);
+        expect(Math.abs(particleList.get()[1].getPosition().y - particleList.get()[0].getPosition().y)).toBe(PARTICLE_SIZE);
+        expect(Math.abs(particleList.get()[1].getPosition().x - particleList.get()[0].getPosition().x)).toBe(PARTICLE_SIZE);
 
         engine.run();
         
         //Should be unchanged since particle is bound to static
-        expect(particleList[1].getPosition().x).toBe(static_x + PARTICLE_SIZE);
-        expect(particleList[1].getPosition().y).toBe(static_y + PARTICLE_SIZE);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x + PARTICLE_SIZE);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y + PARTICLE_SIZE);
     });
 
     it('should add particle and move it to the TOP-LEFT of static particle', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('DOWN_RIGHT'));
 
-        particleList.push(new Particle({x: static_x - 3 * PARTICLE_SIZE, y: static_y + 3 * PARTICLE_SIZE}));
+        particleList.add(new Particle({x: static_x - 3 * PARTICLE_SIZE, y: static_y + 3 * PARTICLE_SIZE}));
         engine = new ParticleEngine(particleList, context);
 
-        expect(particleList[1].isFree()).toBeTruthy();
+        expect(particleList.get()[1].isFree()).toBeTruthy();
 
         engine.run();
         engine.run();
         
         //Should have moved particle 2 steps
         expect(Direction.random).toHaveBeenCalled();
-        expect(particleList[1].isFree()).toBeFalsy();
-        expect(particleList[1].getPosition().x).toBe(static_x - PARTICLE_SIZE);
-        expect(particleList[1].getPosition().y).toBe(static_y + PARTICLE_SIZE);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x - PARTICLE_SIZE);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y + PARTICLE_SIZE);
         //Distance should be size of particle
-        expect(Math.abs(particleList[1].getPosition().y - particleList[0].getPosition().y)).toBe(PARTICLE_SIZE);
-        expect(Math.abs(particleList[1].getPosition().x - particleList[0].getPosition().x)).toBe(PARTICLE_SIZE);
+        expect(Math.abs(particleList.get()[1].getPosition().y - particleList.get()[0].getPosition().y)).toBe(PARTICLE_SIZE);
+        expect(Math.abs(particleList.get()[1].getPosition().x - particleList.get()[0].getPosition().x)).toBe(PARTICLE_SIZE);
 
         engine.run();
         
         //Should be unchanged since particle is bound to static
-        expect(particleList[1].getPosition().x).toBe(static_x - PARTICLE_SIZE);
-        expect(particleList[1].getPosition().y).toBe(static_y + PARTICLE_SIZE);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x - PARTICLE_SIZE);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y + PARTICLE_SIZE);
     });
 
     it('should add particle and move it to the BOTTOM-LEFT of static particle', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('UP_RIGHT'));
 
-        particleList.push(new Particle({x: static_x - 3 * PARTICLE_SIZE, y: static_y - 3 * PARTICLE_SIZE}));
+        particleList.add(new Particle({x: static_x - 3 * PARTICLE_SIZE, y: static_y - 3 * PARTICLE_SIZE}));
         engine = new ParticleEngine(particleList, context);
 
-        expect(particleList[1].isFree()).toBeTruthy();
+        expect(particleList.get()[1].isFree()).toBeTruthy();
 
         engine.run();
         engine.run();
         
         //Should have moved particle 2 steps and bound it
         expect(Direction.random).toHaveBeenCalled();
-        expect(particleList[1].isFree()).toBeFalsy();
-        expect(particleList[1].getPosition().x).toBe(static_x - PARTICLE_SIZE);
-        expect(particleList[1].getPosition().y).toBe(static_y - PARTICLE_SIZE);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x - PARTICLE_SIZE);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y - PARTICLE_SIZE);
         //Distance should be size of particle
-        expect(Math.abs(particleList[1].getPosition().y - particleList[0].getPosition().y)).toBe(PARTICLE_SIZE);
-        expect(Math.abs(particleList[1].getPosition().x - particleList[0].getPosition().x)).toBe(PARTICLE_SIZE);
+        expect(Math.abs(particleList.get()[1].getPosition().y - particleList.get()[0].getPosition().y)).toBe(PARTICLE_SIZE);
+        expect(Math.abs(particleList.get()[1].getPosition().x - particleList.get()[0].getPosition().x)).toBe(PARTICLE_SIZE);
 
         engine.run();
         
         //Should be unchanged since particle is bound to static
-        expect(particleList[1].getPosition().x).toBe(static_x - PARTICLE_SIZE);
-        expect(particleList[1].getPosition().y).toBe(static_y - PARTICLE_SIZE);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x - PARTICLE_SIZE);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y - PARTICLE_SIZE);
     });
 
     it('should add particle and move it to the BOTTOM-RIGHT of static particle', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('UP_LEFT'));
 
-        particleList.push(new Particle({x: static_x + 3 * PARTICLE_SIZE, y: static_y - 3 * PARTICLE_SIZE}));
+        particleList.add(new Particle({x: static_x + 3 * PARTICLE_SIZE, y: static_y - 3 * PARTICLE_SIZE}));
         engine = new ParticleEngine(particleList, context);
 
-        expect(particleList[1].isFree()).toBeTruthy();
+        expect(particleList.get()[1].isFree()).toBeTruthy();
 
         engine.run();
         engine.run();
         
         //Should have moved particle 2 steps and bound it
         expect(Direction.random).toHaveBeenCalled();
-        expect(particleList[1].isFree()).toBeFalsy();
-        expect(particleList[1].getPosition().x).toBe(static_x + PARTICLE_SIZE);
-        expect(particleList[1].getPosition().y).toBe(static_y - PARTICLE_SIZE);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x + PARTICLE_SIZE);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y - PARTICLE_SIZE);
         //Distance should be size of particle
-        expect(Math.abs(particleList[1].getPosition().y - particleList[0].getPosition().y)).toBe(PARTICLE_SIZE);
-        expect(Math.abs(particleList[1].getPosition().x - particleList[0].getPosition().x)).toBe(PARTICLE_SIZE);
+        expect(Math.abs(particleList.get()[1].getPosition().y - particleList.get()[0].getPosition().y)).toBe(PARTICLE_SIZE);
+        expect(Math.abs(particleList.get()[1].getPosition().x - particleList.get()[0].getPosition().x)).toBe(PARTICLE_SIZE);
 
         engine.run();
         
         //Should be unchanged since particle is bound to static
-        expect(particleList[1].getPosition().x).toBe(static_x + PARTICLE_SIZE);
-        expect(particleList[1].getPosition().y).toBe(static_y - PARTICLE_SIZE);
+        expect(particleList.get()[1].isFree()).toBeFalsy();
+        expect(particleList.get()[1].getPosition().x).toBe(static_x + PARTICLE_SIZE);
+        expect(particleList.get()[1].getPosition().y).toBe(static_y - PARTICLE_SIZE);
     });
 });
