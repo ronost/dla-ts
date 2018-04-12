@@ -1,1 +1,1 @@
-export const PARTICLE_SIZE = 2;
+export const PARTICLE_SIZE = 3;

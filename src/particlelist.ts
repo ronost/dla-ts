@@ -4,12 +4,14 @@ import { PARTICLE_SIZE } from './constants';
 export class ParticleList {
     private particleList: Array<Particle> = [];
 
-    constructor(staticParticle: Particle, canvasWidth: number, canvasHeight: number, nrOfRandomParticles: number = 0) {
-        this.add(staticParticle);
+    constructor(canvasSide: number, nrOfRandomParticles: number = 0) {
+        // Add static somewhere near middle but still on a multiple of PARTICLE_SIZE
+        let almostMiddle = Math.ceil((canvasSide / PARTICLE_SIZE) / 2) * PARTICLE_SIZE;
+        this.add(new Particle({x: almostMiddle, y: almostMiddle}, false));
 
         for (let i = 0; i < nrOfRandomParticles; i++) {
-            let x: number = this.randomPosition(0, canvasWidth);
-            let y: number = this.randomPosition(0, canvasHeight);
+            let x: number = this.randomPosition(0, canvasSide);
+            let y: number = this.randomPosition(0, canvasSide);
             this.add(new Particle({x: x, y: y}));
         }
     }
@@ -23,14 +25,7 @@ export class ParticleList {
     }
 
     private randomPosition (min: number, max: number) {
-        // TODO: Write tests for this, it's supposed to give random position with regards to size of particle.
-        function rnd() {
-            let rndValue = Math.floor(Math.random() * (max - min + 1)) + min;
-            if(rndValue % PARTICLE_SIZE === 0) {
-                return rndValue;
-            }
-            return rnd();
-        }
-        return rnd();
+        // Randomizes with a spread of PARTICLE_SIZE.
+        return Math.floor(Math.random() * ((max / PARTICLE_SIZE) - min + 1)) * PARTICLE_SIZE;
     }
 }
