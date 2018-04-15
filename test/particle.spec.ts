@@ -47,8 +47,8 @@ describe('particle', () => {
 
     it('should throw error when no move', () => {
         expect(() => { 
-            p.move({x: 0, y: 0}) }
-        ).toThrow(new Error ('No move'));
+            p.move({x: 0, y: 0}) 
+        }).toThrow(new Error ('No move'));
         
         expect(p.getPosition().x).toEqual(10);
         expect(p.getPosition().y).toEqual(10);

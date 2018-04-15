@@ -9,7 +9,7 @@ describe('particleList', () => {
         particleList = new ParticleList(99, 50);
     });
     
-    it('should contain 5 dynamic particles in list', () => {
+    it('should contain 50 dynamic particles in list', () => {
         expect(particleList.get().filter(particle => particle.isFree()).length).toBe(50);
     });
 
@@ -19,6 +19,12 @@ describe('particleList', () => {
             expect(particle.getPosition().x % PARTICLE_SIZE).toBe(0);
             expect(particle.getPosition().y % PARTICLE_SIZE).toBe(0);
         });
+    });
+
+    it('should throw error when Canvas side is not multiple of Particle size', () => {
+        expect(() => { 
+            new ParticleList(PARTICLE_SIZE * 100 - 1, 50) 
+        }).toThrow(new Error ('Canvas side is not multiple of Particle size'));
     });
 
 });
