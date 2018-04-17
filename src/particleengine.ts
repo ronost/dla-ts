@@ -4,12 +4,14 @@ import { Direction } from './direction';
 
 export class ParticleEngine {
     private particleList: ParticleList;
-    private context: CanvasRenderingContext2D;
     private particleSize: number;
+    private canvasSide: number;
+    private context: CanvasRenderingContext2D;
   
-    constructor(particleList: ParticleList, particleSize: number, context: CanvasRenderingContext2D) {
+    constructor(particleList: ParticleList, particleSize: number, canvasSide: number, context: CanvasRenderingContext2D) {
         this.particleList = particleList;
         this.particleSize = particleSize;
+        this.canvasSide = canvasSide;
         this.context = context;
     }
 
@@ -20,7 +22,12 @@ export class ParticleEngine {
 
             if (particle.isFree()) {
                 // Randown walk
-                particle.move(Direction.random(), this.particleSize);
+                try {
+                    particle.move(Direction.random(), this.particleSize, this.canvasSide, this.canvasSide);
+                }
+                catch {
+                    continue;
+                }
                 for (let staticParticle of this.particleList.get().filter(p => !p.isFree())) {
                     // Pythagorean metric to determine distance. 
                     // Use multiplier to allow for diagonal relationsships.

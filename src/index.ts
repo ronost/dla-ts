@@ -24,7 +24,7 @@ let randomInt = (min: number, max: number)  => {
 
 let init = () => {
   particleList = new ParticleList(DLA_CANVAS_SIDE, PARTICLE_SIZE, 1500);
-  particleEngine = new ParticleEngine(particleList, PARTICLE_SIZE, ctx);
+  particleEngine = new ParticleEngine(particleList, PARTICLE_SIZE, DLA_CANVAS_SIDE, ctx);
 }
 
 let animate = () => {

@@ -1,6 +1,5 @@
 * Controls - (input canvas size and particle size??)
 * Proper error handling
 * Game mechanics:
-  - Do not allow particles to go over the edge
   - Color coding?
   - Particle graphics? 

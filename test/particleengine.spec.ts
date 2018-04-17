@@ -31,7 +31,7 @@ describe('particleEngine', () => {
     });
 
     it('should run run and draw particles', () => {
-        engine = new ParticleEngine(particleList, particleSize, context);
+        engine = new ParticleEngine(particleList, particleSize, canvasSide, context);
         engine.run();
 
         expect(context.fillStyle).toBe('#000000');
@@ -42,7 +42,7 @@ describe('particleEngine', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('LEFT'));
 
         particleList.add(new Particle({x: static_pos + 3 * particleSize, y: static_pos}));
-        engine = new ParticleEngine(particleList, particleSize, context);
+        engine = new ParticleEngine(particleList, particleSize, canvasSide, context);
     
         expect(particleList.get()[1].isFree()).toBeTruthy();
 
@@ -69,7 +69,7 @@ describe('particleEngine', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('RIGHT'));
 
         particleList.add(new Particle({x: static_pos - 3 * particleSize, y: static_pos}));
-        engine = new ParticleEngine(particleList, particleSize, context);
+        engine = new ParticleEngine(particleList, particleSize, canvasSide, context);
 
         expect(particleList.get()[1].isFree()).toBeTruthy();
 
@@ -96,7 +96,7 @@ describe('particleEngine', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('DOWN'));
 
         particleList.add(new Particle({x: static_pos, y: static_pos + 3 * particleSize}));
-        engine = new ParticleEngine(particleList, particleSize, context);
+        engine = new ParticleEngine(particleList, particleSize, canvasSide, context);
         
         expect(particleList.get()[1].isFree()).toBeTruthy();
 
@@ -123,7 +123,7 @@ describe('particleEngine', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('UP'));
 
         particleList.add(new Particle({x: static_pos, y: static_pos - 3 * particleSize}));
-        engine = new ParticleEngine(particleList, particleSize, context);
+        engine = new ParticleEngine(particleList, particleSize, canvasSide, context);
         
         expect(particleList.get()[1].isFree()).toBeTruthy();
 
@@ -150,7 +150,7 @@ describe('particleEngine', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('DOWN_LEFT'));
 
         particleList.add(new Particle({x: static_pos + 3 * particleSize, y: static_pos + 3 * particleSize}));
-        engine = new ParticleEngine(particleList, particleSize, context);
+        engine = new ParticleEngine(particleList, particleSize, canvasSide, context);
         
         expect(particleList.get()[1].isFree()).toBeTruthy();
 
@@ -178,7 +178,7 @@ describe('particleEngine', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('DOWN_RIGHT'));
 
         particleList.add(new Particle({x: static_pos - 3 * particleSize, y: static_pos + 3 * particleSize}));
-        engine = new ParticleEngine(particleList, particleSize, context);
+        engine = new ParticleEngine(particleList, particleSize, canvasSide, context);
 
         expect(particleList.get()[1].isFree()).toBeTruthy();
 
@@ -206,7 +206,7 @@ describe('particleEngine', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('UP_RIGHT'));
 
         particleList.add(new Particle({x: static_pos - 3 * particleSize, y: static_pos - 3 * particleSize}));
-        engine = new ParticleEngine(particleList, particleSize, context);
+        engine = new ParticleEngine(particleList, particleSize, canvasSide, context);
 
         expect(particleList.get()[1].isFree()).toBeTruthy();
 
@@ -234,7 +234,7 @@ describe('particleEngine', () => {
         spyOn(Direction, 'random').and.returnValue(Direction.get('UP_LEFT'));
 
         particleList.add(new Particle({x: static_pos + 3 * particleSize, y: static_pos - 3 * particleSize}));
-        engine = new ParticleEngine(particleList, particleSize, context);
+        engine = new ParticleEngine(particleList, particleSize, canvasSide, context);
 
         expect(particleList.get()[1].isFree()).toBeTruthy();
 

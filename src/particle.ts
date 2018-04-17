@@ -19,12 +19,19 @@ export class Particle {
       return this.free;
     }
 
-    public move(direction: any, stepSize: number = 1) {
+    public move(direction: any, stepSize: number = 1, limitX: number, limitY: number) {
       if (direction.x === 0 && direction.y === 0) {
-        throw new Error('No move');
+        throw new Error('No move: No direction');
       }
 
-      this.coordinates['x'] += direction.x * stepSize;
-      this.coordinates['y'] += direction.y * stepSize;
+      let futureX = this.coordinates['x'] + direction.x * stepSize;
+      let futureY = this.coordinates['y'] + direction.y * stepSize;
+
+      if((futureX >= limitX || futureX < 0) || (futureY >= limitY || futureY < 0)) {
+        throw new Error('No move: Limit violation');
+      }
+
+      this.coordinates['x'] = futureX;
+      this.coordinates['y'] = futureY;
     }
 }
