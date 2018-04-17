@@ -1,16 +1,18 @@
 import { Particle } from './particle'
-import { PARTICLE_SIZE } from './constants';
 
 export class ParticleList {
     private particleList: Array<Particle> = [];
+    private particleSize: number;
 
-    constructor(canvasSide: number, nrOfRandomParticles: number = 0) {
-        if(!this.isMultipleOf(PARTICLE_SIZE, canvasSide)) {
+    constructor(canvasSide: number, particleSize: number, nrOfRandomParticles: number = 0) {
+        this.particleSize = particleSize;
+
+        if(!this.isMultipleOf(this.particleSize, canvasSide)) {
             throw new Error('Canvas side is not multiple of Particle size');
         }
 
         // Add static somewhere near middle but still on a multiple of PARTICLE_SIZE
-        let almostMiddle = Math.ceil((canvasSide / PARTICLE_SIZE) / 2) * PARTICLE_SIZE;
+        let almostMiddle = Math.ceil((canvasSide / this.particleSize) / 2) * this.particleSize;
         this.add(new Particle({x: almostMiddle, y: almostMiddle}, false));
 
         for (let i = 0; i < nrOfRandomParticles; i++) {
@@ -30,7 +32,7 @@ export class ParticleList {
 
     private randomPosition (min: number, max: number) {
         // Randomizes with a spread of PARTICLE_SIZE.
-        return Math.floor(Math.random() * ((max / PARTICLE_SIZE) - min + 1)) * PARTICLE_SIZE;
+        return Math.floor(Math.random() * ((max / this.particleSize) - min + 1)) * this.particleSize;
     }
 
     private isMultipleOf(particleSize: number, sideLength: number) {

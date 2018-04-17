@@ -1,9 +1,8 @@
 import { Particle } from './particle';
 import { PARTICLE_SIZE } from './constants';
+import { DLA_CANVAS_SIDE } from './constants';
 import { ParticleEngine } from './particleengine';
 import { ParticleList } from './particlelist';
-
-const DLA_CANVAS_SIDE = 1000;
 
 let canvas = <HTMLCanvasElement> document.getElementById('dlaCanvas');
 canvas.width = DLA_CANVAS_SIDE;
@@ -24,8 +23,8 @@ let randomInt = (min: number, max: number)  => {
 }
 
 let init = () => {
-  particleList = new ParticleList(DLA_CANVAS_SIDE, 1500);
-  particleEngine = new ParticleEngine(particleList, ctx);
+  particleList = new ParticleList(DLA_CANVAS_SIDE, PARTICLE_SIZE, 1500);
+  particleEngine = new ParticleEngine(particleList, PARTICLE_SIZE, ctx);
 }
 
 let animate = () => {

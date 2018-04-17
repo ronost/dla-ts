@@ -19,12 +19,12 @@ export class Particle {
       return this.free;
     }
 
-    public move(direction: any) {
+    public move(direction: any, stepSize: number = 1) {
       if (direction.x === 0 && direction.y === 0) {
         throw new Error('No move');
       }
 
-      this.coordinates['x'] += direction.x;
-      this.coordinates['y'] += direction.y;
+      this.coordinates['x'] += direction.x * stepSize;
+      this.coordinates['y'] += direction.y * stepSize;
     }
 }

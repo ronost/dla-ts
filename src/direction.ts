@@ -1,14 +1,12 @@
-import { PARTICLE_SIZE } from './constants';
-
 const DIRECTION: any = {
-  UP: Object.freeze({'x': 0, 'y': PARTICLE_SIZE}),
-  UP_RIGHT: Object.freeze({'x': PARTICLE_SIZE, 'y': PARTICLE_SIZE}),
-  RIGHT: Object.freeze({'x': PARTICLE_SIZE, 'y': 0}),
-  DOWN_RIGHT: Object.freeze({'x': PARTICLE_SIZE, 'y': -PARTICLE_SIZE}),
-  DOWN: Object.freeze({'x': 0, 'y': -PARTICLE_SIZE}),
-  DOWN_LEFT: Object.freeze({'x': -PARTICLE_SIZE, 'y': -PARTICLE_SIZE}),
-  LEFT: Object.freeze({'x': -PARTICLE_SIZE, 'y': 0}),
-  UP_LEFT: Object.freeze({'x': -PARTICLE_SIZE, 'y': PARTICLE_SIZE})
+  UP: Object.freeze({'x': 0, 'y': 1}),
+  UP_RIGHT: Object.freeze({'x': 1, 'y': 1}),
+  RIGHT: Object.freeze({'x': 1, 'y': 0}),
+  DOWN_RIGHT: Object.freeze({'x': 1, 'y': -1}),
+  DOWN: Object.freeze({'x': 0, 'y': -1}),
+  DOWN_LEFT: Object.freeze({'x': -1, 'y': -1}),
+  LEFT: Object.freeze({'x': -1, 'y': 0}),
+  UP_LEFT: Object.freeze({'x': -1, 'y': 1})
 };
 
 export class Direction {
