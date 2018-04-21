@@ -1,6 +1,7 @@
 export class Particle {
     private coordinates: Object;
     private free: Boolean;
+    private _boundIndex: number;
 
     constructor(coordinates: Object, free: boolean = true) {
       this.coordinates = Object.seal(coordinates);
@@ -17,6 +18,14 @@ export class Particle {
 
     public isFree() {
       return this.free;
+    }
+
+    public get boundIndex() {
+      return this._boundIndex;
+    }
+
+    public set boundIndex(val: number) {
+      this._boundIndex = val;
     }
 
     public move(direction: any, stepSize: number = 1, limitX: number, limitY: number) {

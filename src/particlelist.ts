@@ -3,6 +3,7 @@ import { Particle } from './particle'
 export class ParticleList {
     private particleList: Array<Particle> = [];
     private particleSize: number;
+    private _currentBoundIndex: number = 1;
 
     constructor(canvasSide: number, particleSize: number, nrOfRandomParticles: number = 0) {
         this.particleSize = particleSize;
@@ -14,12 +15,21 @@ export class ParticleList {
         // Add static somewhere near middle but still on a multiple of PARTICLE_SIZE
         let almostMiddle = Math.ceil((canvasSide / this.particleSize) / 2) * this.particleSize;
         this.add(new Particle({x: almostMiddle, y: almostMiddle}, false));
+        this.get()[0].boundIndex = this.currentBoundIndex++;
 
         for (let i = 0; i < nrOfRandomParticles; i++) {
             let x: number = this.randomPosition(0, canvasSide);
             let y: number = this.randomPosition(0, canvasSide);
             this.add(new Particle({x: x, y: y}));
         }
+    }
+
+    public get currentBoundIndex() {
+        return this._currentBoundIndex;
+    }
+
+    public set currentBoundIndex(val: number) {
+        this._currentBoundIndex = val;
     }
 
     public add(particle: Particle) {

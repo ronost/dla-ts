@@ -18,10 +18,6 @@ window.onload = () => {
   animate();
 }
 
-let randomInt = (min: number, max: number)  => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 let init = () => {
   particleList = new ParticleList(DLA_CANVAS_SIDE, PARTICLE_SIZE, 1500);
   particleEngine = new ParticleEngine(particleList, PARTICLE_SIZE, DLA_CANVAS_SIDE, ctx);

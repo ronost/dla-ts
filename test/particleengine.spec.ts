@@ -257,4 +257,29 @@ describe('particleEngine', () => {
         expect(particleList.get()[1].getPosition().x).toBe(static_pos + particleSize);
         expect(particleList.get()[1].getPosition().y).toBe(static_pos - particleSize);
     });
+
+    it('should set the correct color depending on when becoming static', () => {
+        const fillStyleSpy = spyOnProperty(context, 'fillStyle', 'set').and.callThrough();
+
+        spyOn(Direction, 'random').and.returnValue(Direction.get('LEFT'));
+        for(let i = 2; i < 23; i++) {
+            particleList.add(new Particle({x:  static_pos + i * particleSize, y: static_pos}));
+        }
+        engine = new ParticleEngine(particleList, particleSize, 150, context);
+
+        engine.run();
+        engine.run();
+
+        expect(fillStyleSpy).toHaveBeenCalled();
+        expect(fillStyleSpy).toHaveBeenCalledTimes(particleList.get().length * 2);
+        // Make sure that all colors are represented.
+        expect(fillStyleSpy).toHaveBeenCalledWith('#000000');
+        expect(fillStyleSpy).toHaveBeenCalledWith('#FF0000');
+        expect(fillStyleSpy).toHaveBeenCalledWith('#FF7F00');
+        expect(fillStyleSpy).toHaveBeenCalledWith('#FFFF00');
+        expect(fillStyleSpy).toHaveBeenCalledWith('#00FF00');
+        expect(fillStyleSpy).toHaveBeenCalledWith('#0000FF');
+        expect(fillStyleSpy).toHaveBeenCalledWith('#4B0082');
+        expect(fillStyleSpy).toHaveBeenCalledWith('#9400D3');
+    });
 });
